@@ -4,13 +4,16 @@
   "description": "this package helps create easy google function including all the goodness of express",
   "main": "index.js",
   "scripts": {
-    "test": "tsc test/test.ts  && node test/test.js",
+    "test": "node test/test.js && curl --location --request POST 'http://localhost:4000/CD' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'cd=sdsfsdfsd'",
     "build": "tsc index.ts && gulp minify-js && npm-dts generate -L debug"
   },
   "keywords": [
     "google-function",
     "function"
   ],
+  "repository": {
+    "url": "https://github.com/darkie8/gfunction-creator.git"
+  },
   "dependencies": {
     "@types/moment": "^2.13.0",
     "body-parser": "^1.19.0",
@@ -35,7 +38,8 @@
     "typescript": "^3.8.3",
     "uglify-es": "^3.3.9"
   },
+  "readme": "./README.md",
   "typings": "./index.d.ts",
   "author": "darkie8",
-  "license": "MIT"
+  "license": "GNU GPLv3"
 }

@@ -5,7 +5,9 @@ var http_1 = require("http");
 var index_1 = require("../index");
 var appConfig = {
     port: 4000,
-    env: "dev"
+    allowedCorsOrigin: "*",
+    env: "dev",
+    apiVersion: '/api/v1'
 };
 var port = appConfig.port;
 var AppUtility = new index_1.genericHandlers();
