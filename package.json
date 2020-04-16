@@ -1,6 +1,6 @@
 {
   "name": "google-function-http-tool",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "this package helps create easy google function including all the goodness of express",
   "main": "index.js",
   "scripts": {
