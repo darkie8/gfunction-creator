@@ -11,8 +11,8 @@ const appConfig = {
     const port = appConfig.port;
     let AppUtility = new genericHandlers();
     let routes : routes[]
-    routes = [{type: 'GET', path: '/AB', requesthandler: (req: any, res: { status: (arg0: number) => { send: (arg0: string) => void; }; }) => res.status(200).send(AppUtility.generate(false, 'success', 0, {AB: 'AB'}))}, 
-    {type: 'POST', path: '/CD', requesthandler: (req: any, res: { status: (arg0: number) => { send: (arg0: string) => void; }; }) => res.status(200).send(AppUtility.generate(false, 'success', 0, {AB: req.body.cd}))}
+    routes = [{type: 'GET', path: '/AB', requesthandler: (req: any, res: { status: (arg0: number) => { send: (arg0: string) => void; }; }) => res.status(200).send(AppUtility.generate([false, 'success', 0, {AB: 'AB'}]))}, 
+    {type: 'POST', path: '/CD', requesthandler: (req: any, res: { status: (arg0: number) => { send: (arg0: string) => void; }; }) => res.status(200).send(AppUtility.generate([false, 'success', 0, {AB: req.body.cd}]))}
 ]
     const [finalhandlers, errInfo, Info] = [[AppUtility.globalErrorHandler, AppUtility.globalNotFoundHandler], AppUtility.errorInfo, AppUtility.info]
 let application = new initiateExpress({routes})

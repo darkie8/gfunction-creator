@@ -1,12 +1,12 @@
-declare module 'gfunction-creator/index' {
+declare module 'google-function-http-tool/index' {
   import * as express from 'express';
   import { Request, NextFunction, Response } from 'express';
   import { PathParams } from 'express-serve-static-core';
   export interface routes {
       type: 'GET' | 'PUT' | 'POST' | 'DELETE' | 'OPTIONS';
       path: PathParams;
-      middleware?: ((req: Request, res: Response, next: NextFunction) => any)[];
-      requesthandler?: (req: Request, res: Response) => any;
+      middleware?: ((req: Request<any>, res: Response<any>, next: NextFunction) => any)[];
+      requesthandler?: (req: Request<any>, res: Response<any>) => any;
       distinctHeaders?: string[][];
   }
   export interface handlerFace {
@@ -32,7 +32,7 @@ declare module 'gfunction-creator/index' {
       newAllHeaders?: string[][];
   }
   export class genericHandlers {
-      generate: (err: boolean, message: string, status: number, data: any) => any;
+      generate: (response?: any) => any;
       errorInfo: (errorMessage: any, errorOrigin: any, errorLevel: any) => {
           timestamp: string;
           errorMessage: any;
@@ -45,9 +45,16 @@ declare module 'gfunction-creator/index' {
           origin: any;
           level: any;
       };
-      globalErrorHandler: (err: any, req: express.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("express-serve-static-core").Query>, res: express.Response<any>, next: express.NextFunction) => void;
-      globalNotFoundHandler: (req: express.Request<import("express-serve-static-core").ParamsDictionary, any, any, import("express-serve-static-core").Query>, res: express.Response<any>, next?: express.NextFunction) => void;
-      constructor(generate?: (err: boolean, message: string, status: number, data: any) => any, errorInfo?: (errorMessage: any, errorOrigin: any, errorLevel: any) => {
+      globalErrorHandler: (err: any, req: Request<any>, res: Response<any>, next: express.NextFunction) => void;
+      globalNotFoundHandler: (req: Request<any>, res: Response<any>, next?: express.NextFunction) => void;
+      notFoundResponse: any;
+      errResponse: any;
+      constructor(generate?: ({ err: boolean, message: string, status: number, data: any }: {
+          err: any;
+          message: any;
+          status: any;
+          data: any;
+      }) => any, errorInfo?: (errorMessage: any, errorOrigin: any, errorLevel: any) => {
           timestamp: string;
           errorMessage: any;
           errorOrigin: any;
@@ -69,7 +76,12 @@ declare module 'gfunction-creator/index' {
       /**
        * generateFunction
        */
-      responseGenerator(func: (err: boolean, message: string, status: number, data: any) => any): void;
+      responseGenerator(func: (response: any | {
+          err: boolean;
+          message: string;
+          status: number;
+          data: any;
+      }) => any, notFoundRes: any, globalerrRes: any): void;
       /**
        * errorInfoFunction
        */
@@ -131,7 +143,7 @@ declare module 'gfunction-creator/index' {
   export default initiateExpress;
 
 }
-declare module 'gfunction-creator' {
-  import main = require('gfunction-creator/index');
+declare module 'google-function-http-tool' {
+  import main = require('google-function-http-tool/index');
   export = main;
 }

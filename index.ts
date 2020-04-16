@@ -14,8 +14,8 @@ const app = express();
     export interface routes {
         type: 'GET' | 'PUT' | 'POST' | 'DELETE'  | 'OPTIONS';
         path: PathParams;
-        middleware?: ((req: Request, res: Response, next: NextFunction) => any)[]
-        requesthandler?: (req: Request, res: Response) => any;
+        middleware?: ((req: Request<any>, res: Response<any>, next: NextFunction) => any)[]
+        requesthandler?: (req: Request<any>, res: Response<any>) => any;
         distinctHeaders?: string[][]
     }
     export interface handlerFace {
@@ -44,13 +44,7 @@ const app = express();
     }
     export class genericHandlers {
          /* response generation library for api */
-        public generate = (err: boolean, message: string, status: number, data: any): any => {
-            let response = {
-              error: err,
-              message: message,
-              status: status,
-              data: data
-            }
+        public generate = (response?: any | {error?: boolean, message?: string, status?: number, data?: any}): any => {
             return response
           }
         public errorInfo = (errorMessage: any, errorOrigin: any, errorLevel: any) => {
@@ -79,24 +73,26 @@ const app = express();
             pino().info(infoMessage)
             return infoMessage
           } // end infoCapture
-        public globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+        public globalErrorHandler = (err: any, req: Request<any>, res: Response<any>, next: NextFunction) => {
             this.errorInfo(`Application Error Handler called : ${err}`, 'globalErrorHandler', 10)
             if(err) {
-                let apiResponse = this.generate(true, 'Some error occured at global level',500, null)
+                let apiResponse = this.errResponse ? this.errResponse : this.generate({error: true, message: 'Some error occured at global level', status: 500, data: null})
                 res.status(500).send(apiResponse)
             }
         
         
         }// end request ip logger function
         
-        public globalNotFoundHandler = (req: Request, res: Response, next?: NextFunction) => {
+        public globalNotFoundHandler = (req: Request<any>, res: Response<any>, next?: NextFunction) => {
         
             this.errorInfo("Global not found handler called", 'globalNotFoundHandler', 10);
-            let apiResponse = this.generate(true, 'Route not found in the application',404, null)
+            let apiResponse = this.notFoundResponse ? this.notFoundResponse : this.generate({error: true, message: 'Route not found in the application', status: 404, data: null})
             res.status(404).send(apiResponse)
         
         }
-        constructor(generate?: (err: boolean, message: string, status: number, data: any) => any, errorInfo?: (errorMessage: any, errorOrigin: any, errorLevel: any) => { timestamp: string; errorMessage: any; errorOrigin: any; errorLevel: any; }, info?: (message: any, origin: any, importance: any) => { timestamp: string; message: any; origin: any; level: any; }, globalErrorHandler?: (err: any, req: any, res: { status: (arg0: number) => { send: (arg0: any) => void; }; }, next: () => void) => void, globalNotFoundHandler?: (req: any, res: { status: (arg0: number) => { send: (arg0: any) => void; }; }) => void) {
+        public notFoundResponse: any;
+        public errResponse: any;
+        constructor(generate?: ({err: boolean, message: string, status: number, data: any}) => any, errorInfo?: (errorMessage: any, errorOrigin: any, errorLevel: any) => { timestamp: string; errorMessage: any; errorOrigin: any; errorLevel: any; }, info?: (message: any, origin: any, importance: any) => { timestamp: string; message: any; origin: any; level: any; }, globalErrorHandler?: (err: any, req: any, res: { status: (arg0: number) => { send: (arg0: any) => void; }; }, next: () => void) => void, globalNotFoundHandler?: (req: any, res: { status: (arg0: number) => { send: (arg0: any) => void; }; }) => void) {
             this.generate = generate ? generate : this.generate;
             this.errorInfo = errorInfo ? errorInfo : this.errorInfo;
             this.info = info ? info : this.info;
@@ -106,8 +102,10 @@ const app = express();
         /**
          * generateFunction
          */
-        public responseGenerator(func: (err: boolean, message: string, status: number, data: any) => any) {
+        public responseGenerator(func: (response: any | {err: boolean, message: string, status: number, data: any}) => any, notFoundRes: any, globalerrRes: any) {
             this.generate = func;
+            this.notFoundResponse = notFoundRes;
+            this.errResponse = globalerrRes;
         }
         /**
          * errorInfoFunction
