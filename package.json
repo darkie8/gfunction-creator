@@ -1,11 +1,13 @@
 {
   "name": "google-function-http-tool",
-  "version": "1.0.6",
+  "version": "1.0.10",
   "description": "this package helps create easy google function including all the goodness of express",
   "main": "index.js",
   "scripts": {
-    "test": "node test/test.js && curl --location --request POST 'http://localhost:4000/CD' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'cd=sdsfsdfsd'",
-    "build": "tsc index.ts && gulp minify-js && npm-dts generate -L debug"
+    "test": "node test/test.js",
+    "mockreq": " curl --location --request GET 'http://localhost:4000/CD' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'cd=sdsfsdfsd'",
+    "build": "tsc index.ts && gulp minify-js",
+    "declaration": "npm-dts generate -L debug"
   },
   "keywords": [
     "google-function",

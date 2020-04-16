@@ -137,16 +137,18 @@ const app = express();
         private routes: routes[];
         private finalhandlers: (handlerFace | Errface)[];
         public app = express();
-        private allowedCorsOrigin = '*';
-        private allowedMethods = '*';
-        private allowedHeaders = '*';
-        private allowedCred: boolean;
-        private allowedMaxAge: string;
+        public allowedCorsOrigin = '*';
+        public allowedMethods = '*';
+        public allowedHeaders = '*';
+        public allowedCred = false;
+        public allowedMaxAge = `86400`;
         private AppUtility = new genericHandlers();
         private CommonUtilizedHandler: (handlerFace | Errface)[]
         private normalHeaders = [ ['Access-Control-Allow-Origin', `${this.allowedCorsOrigin}`],
                                   ['Access-Control-Allow-Methods', `${this.allowedMethods}`],
-                                  ['Access-Control-Allow-Headers', `${this.allowedHeaders}`]
+                                  ['Access-Control-Allow-Headers', `${this.allowedHeaders}`],
+                                  ["Access-Control-Allow-Credentials",this.allowedCred],
+                                  ["Access-Control-Max-Age",this.allowedMaxAge]// 24 hours
                                 ];
         
         constructor(input: gFunctionInput)  {
@@ -164,25 +166,27 @@ const app = express();
         /**
          * Handles option request
          */
-        private OptionHandler(req: Request, res: Response, next: NextFunction) {
-            try {
+        // public OptionHandler(app: Application, optionextraheaders: {} ) {
+            
+        //     console.log(this)
+        //     try {
+            
+        //     const hero = (req: Request, res: Response, next: NextFunction) => {
+        //         try {   
+        //         if(req.method !== 'OPTIONS') {next(); return;}
+        //         res.writeHead(200, optionextraheaders);
+        //         res.end();
+        //         } catch (error) {
+        //             next(error);
+        //         }
+        //     }
+            
+        //     } catch (error) {
+                
+        //         throw error;
+        //     }
 
-            if(req.method !== 'OPTIONS') {next(); return;}
-            // this.allowedCorsOrigin === '*' ? this.allowedCorsOrigin : new URL(this.allowedCorsOrigin);
-            let headers = {};
-            // IE8 does not allow domains to be specified, just the *
-            headers["Access-Control-Allow-Origin"] = req.headers.origin ? req.headers.origin : this.allowedCorsOrigin;
-            headers["Access-Control-Allow-Methods"] = this.allowedMethods;
-            headers["Access-Control-Allow-Credentials"] = this.allowedCred;
-            headers["Access-Control-Max-Age"] = this.allowedMaxAge; // 24 hours
-            headers["Access-Control-Allow-Headers"] = this.allowedHeaders;
-            res.writeHead(200, headers);
-            res.end();
-            } catch (error) {
-                next(error);
-                // throw error;
-            }
-        }
+        // }
         private RouteHandler (app: Application, routes: routes[]) {
             try {
                 
@@ -200,7 +204,7 @@ const app = express();
                 throw error
             }
         }
-        private resHeaderSet(app: Application, normalHeaders: string[][]) {
+        private resHeaderSet(app: Application, normalHeaders: any[][]) {
             try {
                 
             app.all('*', (req: Request, res: Response, next?: NextFunction)  => {
@@ -208,6 +212,10 @@ const app = express();
                    
                 for(let el of normalHeaders) {
                     res.header(el[0], el[1])
+                }
+                if(req.method === 'OPTIONS') {
+                    res.status(200).end();
+                    return;
                 }
                 next(); 
                 } catch (error) {
@@ -247,7 +255,7 @@ const app = express();
         }
         public initiateAppEngine () {
             try {
-            this.app.use(this.initialHandlers.concat([this.OptionHandler]))
+            this.app.use(this.initialHandlers)
             this.resHeaderSet(this.app, this.normalHeaders);
             this.setParicularHeaders(this.app, this.routes);
             this.RouteHandler(this.app, this.routes);

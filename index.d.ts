@@ -122,11 +122,11 @@ declare module 'google-function-http-tool/index' {
       private routes;
       private finalhandlers;
       app: import("express-serve-static-core").Express;
-      private allowedCorsOrigin;
-      private allowedMethods;
-      private allowedHeaders;
-      private allowedCred;
-      private allowedMaxAge;
+      allowedCorsOrigin: string;
+      allowedMethods: string;
+      allowedHeaders: string;
+      allowedCred: boolean;
+      allowedMaxAge: string;
       private AppUtility;
       private CommonUtilizedHandler;
       private normalHeaders;

@@ -10,10 +10,10 @@ A simple google function creator, it makes your google function code small with 
 
 ## Usage
 
-    const gFunction = require('gfunction-creator');
+    const gFunction = require('google-function-http-tool');
     const genericHandlers = gFunction.genericHandlers;
     const initiateExpress = gFunction.initiateExpress
-    // import { genericHandlers, routes, initiateExpress } from "gfunction-creator";
+    // import { genericHandlers, routes, initiateExpress } from "google-function-http-tool";
 
     let AppUtility = new genericHandlers();
     const [errInfo, Info] = [AppUtility.errorInfo, AppUtility.info]
