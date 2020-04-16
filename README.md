@@ -1,4 +1,4 @@
-# Excel file order formatter for Bengali & English
+# google-function-http-tool
 
 =========
 
@@ -6,26 +6,33 @@ A simple google function creator, it makes your google function code small with 
 
 ## Installation
 
-  `npm install bengali-excel-order-dictionary`
+  `npm install google-function-http-tool`
 
 ## Usage
 
     const gFunction = require('gfunction-creator');
-
+    const genericHandlers = gFunction.genericHandlers;
+    const initiateExpress = gFunction.initiateExpress
     // import { genericHandlers, routes, initiateExpress } from "gfunction-creator";
 
     let AppUtility = new genericHandlers();
+    const [errInfo, Info] = [AppUtility.errorInfo, AppUtility.info]
     let routes = [{
      type: 'GET',
      path: '/AB',
-     requesthandler: (req, res) => res.status(200).send(AppUtility.generate(false, 'success', 0, {AB: 'AB'}))
+     requesthandler: (req, res) => {
+        Info('success', 'AB', 5 )
+        res.status(200).send(AppUtility.generate(false, 'success', 0, {AB: 'AB'}))
+    }
      }, 
     {type: 'POST',
      path: '/CD', 
-     requesthandler: (req, res) => res.status(200).send(AppUtility.generate(false, 'success', 0, {AB: req.body.cd}))
+     requesthandler: (req, res) => {
+        Info('success', 'CD', 5 );
+        res.status(200).send(AppUtility.generate(false, 'success', 0, {AB: req.body.cd}))
+    }
      }
-    ]
-    const [errInfo, Info] = [AppUtility.errorInfo, AppUtility.info]
+    ];
     let application = new initiateExpress({routes})
     application.initiateAppEngine();
     module.exports ={app: application.app}
