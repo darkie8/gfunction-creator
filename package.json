@@ -7,12 +7,13 @@
     "test": "node test/test.js && curl --location --request POST 'http://localhost:4000/CD' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'cd=sdsfsdfsd'",
     "build": "tsc index.ts && gulp minify-js && npm-dts generate -L debug"
   },
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
   "keywords": [
     "google-function",
     "function"
   ],
   "repository": {
-    "url": "https://github.com/darkie8/gfunction-creator.git"
+    "url": "https://github.com/darkie8/google-function-http-tool.git"
   },
   "dependencies": {
     "@types/moment": "^2.13.0",
