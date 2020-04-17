@@ -4,6 +4,11 @@
 
 A simple google function creator, it makes your google function code small with default provided setting; you just have to add what you need to add , no more unnecessary coding! Everything is configured , and also can be fine tuned with custom stuff. You can create normal express app too with this tool.
 
+## fixes in 1.0.12
+
+fixing declaration of generate method of genericHandlers class in source files. updating readme file on
+usage of response generation method.
+
 ## Installation
 
   `npm install google-function-http-tool`
@@ -22,14 +27,14 @@ A simple google function creator, it makes your google function code small with 
      path: '/AB',
      requesthandler: (req, res) => {
         Info('success', 'AB', 5 )
-        res.status(200).send(AppUtility.generate(false, 'success', 0, {AB: 'AB'}))
+        res.status(200).send(AppUtility.generate({error: false, message: 'success', status: 0, data: {AB: 'AB'}}))
     }
      }, 
     {type: 'POST',
      path: '/CD', 
      requesthandler: (req, res) => {
         Info('success', 'CD', 5 );
-        res.status(200).send(AppUtility.generate(false, 'success', 0, {AB: req.body.cd}))
+        res.status(200).send(AppUtility.generate({error: false, message: 'success', status: 0, data: {AB: req.body.cd}}))
     }
      }
     ];
