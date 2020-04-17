@@ -45,8 +45,8 @@ declare module 'google-function-http-tool/index' {
           origin: any;
           level: any;
       };
-      globalErrorHandler: (err: any, req: express.Request<any, any, any, import("express-serve-static-core").Query>, res: express.Response<any>, next: express.NextFunction) => void;
-      globalNotFoundHandler: (req: express.Request<any, any, any, import("express-serve-static-core").Query>, res: express.Response<any>, next?: express.NextFunction) => void;
+      globalErrorHandler: (err: any, req: express.Request<any>, res: express.Response<any>, next: express.NextFunction) => void;
+      globalNotFoundHandler: (req: express.Request<any>, res: express.Response<any>, next?: express.NextFunction) => void;
       notFoundResponse: any;
       errResponse: any;
       constructor(generate?: ({ err: boolean, message: string, status: number, data: any }: {
