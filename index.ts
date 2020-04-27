@@ -6,6 +6,7 @@ import * as cookieParser from 'cookie-parser';
 import { json, urlencoded } from 'body-parser';
 import { Request, NextFunction, Response} from 'express';
 import {PathParams, Application} from 'express-serve-static-core'
+import * as helmet from 'helmet';
 const timeZone = process.env.timeZone ? process.env.timeZone : 'Asia/Kolkata'
 const now = () => moment().format();
 const normallocalvalue = () => momentz(now()).tz(timeZone).format()
@@ -153,7 +154,7 @@ const app = express();
         
         constructor(input: gFunctionInput)  {
             this.routes = input.routes;
-            this.initialHandlers = input.initialHandlers ? [json(), urlencoded({ extended: false }), cookieParser()].concat(input.initialHandlers) : [json(), urlencoded({ extended: false }), cookieParser()];
+            this.initialHandlers = input.initialHandlers ? [json(), urlencoded({ extended: false }), cookieParser()].concat(input.initialHandlers) : [json(), urlencoded({ extended: false }), cookieParser(), helmet()];
             this.finalhandlers = input.finalhandlers ? input.finalhandlers : [];
             this.CommonUtilizedHandler = [input.defaultErrHandler? input.defaultErrHandler : this.AppUtility.globalErrorHandler, input.notFoundHandler? input.notFoundHandler : this.AppUtility.globalNotFoundHandler]
             this.normalHeaders = !input.newAllHeaders ? this.normalHeaders : this.normalHeaders.concat(input.newAllHeaders);

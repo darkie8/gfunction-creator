@@ -4,9 +4,9 @@
 
 A simple google function creator, it makes your google function code small with default provided setting; you just have to add what you need to add , no more unnecessary coding! Everything is configured , and also can be fine tuned with custom stuff. You can create normal express app too with this tool.
 
-## fixes in 1.0.13
+## fixes in 1.0.15
 
-fixing declaration of Request.
+fixing express header vulnerabilities.
 
 ## Installation
 
