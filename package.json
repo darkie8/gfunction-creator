@@ -36,7 +36,7 @@
     "@types/moment-timezone": "^0.5.12",
     "@types/node": "^13.11.1",
     "@types/pino": "^5.17.0",
-    "gulp": "^4.0.2",
+    "gulp": "^5.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-uglify": "^3.0.2",
     "npm-dts": "^1.2.1",
